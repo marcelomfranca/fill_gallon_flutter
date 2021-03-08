@@ -1,4 +1,9 @@
+import 'package:fill_gallon_flutter/widget/gallon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:yeslist_fill_gallon/yeslist_fill_gallon.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -20,6 +25,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
+  List<Bottle> bottles = <Bottle>[];
+  Gallon gallon = Gallon(1);
+  String valueText = '';
 
   void _incrementCounter() {
     setState(() {
@@ -30,6 +38,52 @@ class _HomePageState extends State<HomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  _createDialog(BuildContext context) async {
+    TextEditingController controller = TextEditingController();
+
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Bottle filled volume: '),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: controller,
+              keyboardType: TextInputType.number,
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                color: Colors.green,
+                elevation: 5.0,
+                child: Text('add'),
+                onPressed: () {
+                  setState(() {
+                    if (double.tryParse(valueText) != null) {
+                      bottles.add(Bottle(double.parse(valueText)));
+                      Navigator.of(context).pop(controller.text.toString());
+                      _counter = bottles.length;
+                      valueText = '';
+                    }
+                  });
+                },
+              ),
+              MaterialButton(
+                color: Colors.red,
+                elevation: 5.0,
+                child: Text('cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(controller.text.toString());
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -45,6 +99,7 @@ class _HomePageState extends State<HomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        centerTitle: true,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -63,23 +118,129 @@ class _HomePageState extends State<HomePage> {
           // how it positions its children. Here we use mainAxisAlignment to
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
+          mainAxisAlignment: MainAxisAlignment.start,
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List<Widget>.generate(bottles.length, (index) {
+                    return Container(
+                      margin: const EdgeInsets.all(8.0),
+                      child: Stack(
+                        children: <Widget>[
+                          Stack(
+                            children: [
+                              Container(
+                                child: SvgPicture.asset(
+                                  'assets/bottle.svg',
+                                  height: MediaQuery.of(context).size.height *
+                                      15 /
+                                      100,
+                                  placeholderBuilder: (BuildContext context) =>
+                                      Container(
+                                          child: Text(bottles[index].label)),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0.0,
+                                child: Container(
+                                    height:
+                                        ((((MediaQuery.of(context).size.height *
+                                                        15 /
+                                                        100) -
+                                                    30) *
+                                                bottles[index].volume) /
+                                            bottles[index].capacity),
+                                    width: 100,
+                                    color: Colors.blue,
+                                    child: Container()),
+                              ),
+                            ],
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  bottles[index].label,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color(0xFF000000), fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: GallonWidget(
+                gallon: gallon,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Text(
-              'You have pushed the button this many times:',
+              'Total of bottles:',
+              style: TextStyle(
+                  color: Color(0xFF0556b2),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              //style: Theme.of(context).textTheme.headline4,
+              style: TextStyle(color: Color(0xFF077ccc), fontSize: 36),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.orange,
+            onPressed: () => _createDialog(context),
+            tooltip: 'Increment',
+            child: Icon(Icons.play_arrow),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          FloatingActionButton(
+            backgroundColor: Colors.red,
+            onPressed: () {
+              setState(() {
+                bottles = <Bottle>[];
+              });
+            },
+            tooltip: 'Increment',
+            child: Icon(Icons.delete),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          FloatingActionButton(
+            backgroundColor: Colors.blue,
+            onPressed: () => _createDialog(context),
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

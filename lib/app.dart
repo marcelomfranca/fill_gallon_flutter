@@ -19,7 +19,7 @@ class FillGallonApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'YesList Challenge'),
     );
   }
 }
