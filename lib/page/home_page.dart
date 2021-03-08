@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
-  List<Bottle> bottles = <Bottle>[];
+  List<Bottle> _bottles = <Bottle>[];
   Gallon gallon = Gallon(1);
   String valueText = '';
 
@@ -65,9 +65,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   setState(() {
                     if (double.tryParse(valueText) != null) {
-                      bottles.add(Bottle(double.parse(valueText)));
+                      _bottles.add(Bottle(double.parse(valueText)));
                       Navigator.of(context).pop(controller.text.toString());
-                      _counter = bottles.length;
+                      _counter = _bottles.length;
                       valueText = '';
                     }
                   });
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List<Widget>.generate(bottles.length, (index) {
+                  children: List<Widget>.generate(_bottles.length, (index) {
                     return Container(
                       margin: const EdgeInsets.all(8.0),
                       child: Stack(
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                                       100,
                                   placeholderBuilder: (BuildContext context) =>
                                       Container(
-                                          child: Text(bottles[index].label)),
+                                          child: Text(_bottles[index].label)),
                                 ),
                               ),
                               Positioned(
@@ -154,8 +154,8 @@ class _HomePageState extends State<HomePage> {
                                                         15 /
                                                         100) -
                                                     30) *
-                                                bottles[index].volume) /
-                                            bottles[index].capacity),
+                                                _bottles[index].volume) /
+                                            _bottles[index].capacity),
                                     width: 100,
                                     color: Colors.blue,
                                     child: Container()),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                               child: Container(
                                 padding: EdgeInsets.only(top: 10),
                                 child: Text(
-                                  bottles[index].label,
+                                  _bottles[index].label,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Color(0xFF000000), fontSize: 20),
@@ -225,7 +225,8 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.red,
             onPressed: () {
               setState(() {
-                bottles = <Bottle>[];
+                _bottles = <Bottle>[];
+                _counter = 0;
               });
             },
             tooltip: 'Increment',
