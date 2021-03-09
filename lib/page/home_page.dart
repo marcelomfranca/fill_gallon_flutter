@@ -140,18 +140,7 @@ class _HomePageState extends State<HomePage> {
         ..startFillAnalysis()
         ..whereIsOptimal();
 
-      gallon.optimalFillOptions.forEach((element) {
-        gallon.fill(element);
-      });
-
-      print('\n' + 'Gallon: ');
-      print(gallon.toJson());
-
-      print('\n' + 'Bottle(s): \n');
-      gallon.fillSource.forEach((element) {
-        print('\t');
-        print(element.toJson());
-      });
+      gallon.fill(gallon.optimalFillOptions[0]);
 
       _homeController.gallons.clear();
       _homeController.gallons.add(gallon);
