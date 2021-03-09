@@ -50,5 +50,12 @@ abstract class _HomeController with Store {
         ..isFullFilled = (volume == capacity));
       print(gallons[0].toJson());
     }
+    formReset();
+  }
+
+  @action
+  void formReset() {
+    capacity = 0.0;
+    volume = 0.0;
   }
 }

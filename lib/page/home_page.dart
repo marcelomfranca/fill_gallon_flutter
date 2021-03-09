@@ -19,11 +19,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomeController _homeController = HomeController();
   final _formKey = GlobalKey<FormState>();
+  TextEditingController controllerCapacityInput, controllerFilledVolumeInput;
 
   _createDialog(BuildContext context, String recipient) async {
-    TextEditingController controllerCapacityInput = TextEditingController();
-    TextEditingController controllerFilledVolumeInput = TextEditingController()
-      ..text = '0';
+    controllerCapacityInput = TextEditingController();
+    controllerFilledVolumeInput = TextEditingController()..text = '0';
+    _homeController.formReset();
+
     var title = '';
     var autofill = false;
 
@@ -58,6 +60,12 @@ class _HomePageState extends State<HomePage> {
                     onSaved: (value) {
                       _homeController.capacity = double.parse(value);
                     },
+                    onChanged: (value) {
+                      /*if (_validadeCapacity(value) == null ||
+                          _validadeCapacity(value).isEmpty) {
+                        controllerCapacityInput.text = value;
+                      }*/
+                    },
                   ),
                   Visibility(
                     visible: !autofill,
@@ -70,6 +78,12 @@ class _HomePageState extends State<HomePage> {
                       validator: _validadeVolume,
                       onSaved: (value) {
                         _homeController.volume = double.parse(value);
+                      },
+                      onChanged: (value) {
+                        /*if (_validadeVolume(value) == null ||
+                            _validadeVolume(value).isEmpty) {
+                          controllerFilledVolumeInput.text = value;
+                        }*/
                       },
                     ),
                   ),
@@ -97,6 +111,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _validadeCapacity(String value) {
+    if (value.isEmpty) return '';
+
     var v = double.tryParse(value);
 
     if (v == null) {
@@ -113,9 +129,12 @@ class _HomePageState extends State<HomePage> {
     if (value.isEmpty) return '';
 
     var v = double.tryParse(value);
+    var c = double.tryParse(controllerCapacityInput.text);
 
-    if (v == null) {
+    if (v == null || v < 0) {
       return '>>> insert a positive number <<<';
+    } else if (c != null && v > c) {
+      return '>>> max filled is ' + controllerCapacityInput.text + ' <<<';
     }
     return null;
   }
@@ -139,7 +158,7 @@ class _HomePageState extends State<HomePage> {
         ..startFillAnalysis()
         ..whereIsOptimal();
 
-      if (gallon.optimalFillOptions.isEmpty) {
+      if (gallon.fillOptions.isEmpty) {
         return;
       }
 
@@ -255,7 +274,7 @@ class _HomePageState extends State<HomePage> {
           ),
           FloatingActionButton(
             backgroundColor: Colors.blue,
-            onPressed: () => _createDialog(context, 'bottle'),
+            onPressed: () => _createDialog(context, RecipientType.bottle),
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),

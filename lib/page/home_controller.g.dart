@@ -155,6 +155,17 @@ mixin _$HomeController on _HomeController, Store {
   }
 
   @override
+  void formReset() {
+    final _$actionInfo = _$_HomeControllerActionController.startAction(
+        name: '_HomeController.formReset');
+    try {
+      return super.formReset();
+    } finally {
+      _$_HomeControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 gallons: ${gallons},

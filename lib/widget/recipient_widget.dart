@@ -51,11 +51,12 @@ class _RecipientWidgetState extends State<RecipientWidget> {
   Widget _create() {
     var width = (MediaQuery.of(context).size.width / 8) - 13;
     var height = ((MediaQuery.of(context).size.height * 15) / 100) - 46;
-    height = (height * widget.object.volume) / widget.object.capacity;
-    height = (height < 1) ? 1 : height;
 
     width = (widget.width != null) ? widget.width : width;
     height = (widget.height != null) ? widget.height : height;
+
+    height = (height * widget.object.volume) / widget.object.capacity;
+    height = (height < 1) ? 1 : height;
 
     if (widget.object.capacity > 0) {
       return Container(
@@ -90,7 +91,7 @@ class _RecipientWidgetState extends State<RecipientWidget> {
                   padding: EdgeInsets.only(top: 15),
                   child: Text(
                     widget.object.label +
-                        ' ' +
+                        '\n' +
                         (((widget.object.volume < widget.object.capacity) &&
                                 widget.object.volume > 0)
                             ? widget.object.volume.toString() + 'l'
@@ -124,7 +125,7 @@ class _RecipientWidgetState extends State<RecipientWidget> {
             child: Container(
               padding: EdgeInsets.all(5),
               child: Text(
-                'tap to create a gallon',
+                'tap to create a ' + widget.objectType,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black45, fontSize: 20),
               ),
