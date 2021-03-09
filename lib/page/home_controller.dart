@@ -1,18 +1,54 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:yeslist_fill_gallon/yeslist_fill_gallon.dart';
-/*
 
-class HomeController = HomeControllerBase with _$HomeController;
+part 'home_controller.g.dart';
 
-abstract class HomeControllerBase with Store {
+class HomeController = _HomeController with _$HomeController;
+
+abstract class _HomeController with Store {
   @observable
-  ObservableList<Bottle> todos = ObservableList<Bottle>();
+  ObservableList<Gallon> gallons = ObservableList<Gallon>();
+  @observable
+  ObservableList<Bottle> bottles = ObservableList<Bottle>();
 
   @observable
-  VisibilityFilter filter = VisibilityFilter.all;
+  bool updateGallon = false;
 
   @observable
-  String currentDescription = '';
+  double capacity = 0.0;
+  @observable
+  double volume = 0.0;
+
+  @observable
+  bool isBottle = false;
+
+  @observable
+  int counter = 0;
+
+  @observable
+  AutovalidateMode validadeMode = AutovalidateMode.disabled;
+
+  @action
+  void initGallon() {
+    gallons.clear();
+    gallons.add(Gallon(15));
+  }
+
+  @action
+  void saveForm() {
+    if (isBottle) {
+      bottles.add(Bottle(capacity));
+      counter = bottles.length;
+      if (gallons.isNotEmpty) gallons.last.fillSource = bottles;
+    } else {
+      gallons.clear();
+      gallons.add(Gallon(capacity, fillSource: bottles)
+        ..filled = volume
+        ..isEmpty = (volume == 0)
+        ..isFullFilled = (volume == capacity));
+      print(gallons[0].toJson());
+    }
+  }
 }
-*/

@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   mobx: ^1.2.1+4
+  flutter_mobx: ^1.1.0+2
   yeslist_fill_gallon:
     #git: https://github.com/marcelomfranca/yeslist_fill_gallon.git
     path: ../../
