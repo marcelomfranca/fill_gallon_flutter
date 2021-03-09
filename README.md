@@ -1,7 +1,11 @@
 # Fill Gallon Flutter
 
-A new Flutter project.
+Flutter implementation of the Yes List fill gallon" library.
 
-# Demo
+# Example 1
 
-![Farmers Market Finder Demo](demo/YesListFillGallon.gif)
+![Farmers Market Finder Demo](demo/YesListFillGallonExample1.gif)
+
+# Example 2
+
+![Farmers Market Finder Demo](demo/YesListFillGallonExample2.gif)
