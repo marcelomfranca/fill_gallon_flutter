@@ -1,5 +1,4 @@
 import 'package:fill_gallon_flutter/page/home_controller.dart';
-import 'package:fill_gallon_flutter/widget/gallon_widget.dart';
 import 'package:fill_gallon_flutter/widget/recipient_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -139,6 +138,10 @@ class _HomePageState extends State<HomePage> {
       gallon
         ..startFillAnalysis()
         ..whereIsOptimal();
+
+      if (gallon.optimalFillOptions.isEmpty) {
+        return;
+      }
 
       gallon.fill(gallon.optimalFillOptions[0]);
 
