@@ -28,6 +28,16 @@ class RecipientWidget extends StatefulWidget {
 
 class _RecipientWidgetState extends State<RecipientWidget> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     widget.padding =
         (widget.padding == null) ? EdgeInsets.all(0) : widget.padding;

@@ -145,6 +145,7 @@ class _HomePageState extends State<HomePage> {
 
   _run(Gallon gallon) {
     if (gallon != null) {
+      if (gallon.fillSource.isEmpty) return;
       if (gallon.isFullFilled) return;
 
       //if (gallon.fillOptions.isNotEmpty) {
