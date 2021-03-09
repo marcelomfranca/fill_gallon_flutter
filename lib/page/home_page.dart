@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   _createDialog(BuildContext context, String recipient) async {
     controllerCapacityInput = TextEditingController();
     controllerFilledVolumeInput = TextEditingController()..text = '0';
-    _homeController.formReset();
+    //_homeController.formReset();
 
     var title = '';
     var autofill = false;
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
             title: Text(title),
             content: Form(
               key: _formKey,
-              autovalidateMode: _homeController.validadeMode,
+              autovalidateMode: AutovalidateMode.always,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,10 +61,7 @@ class _HomePageState extends State<HomePage> {
                       _homeController.capacity = double.parse(value);
                     },
                     onChanged: (value) {
-                      /*if (_validadeCapacity(value) == null ||
-                          _validadeCapacity(value).isEmpty) {
-                        controllerCapacityInput.text = value;
-                      }*/
+                      _homeController.capacity = double.tryParse(value);
                     },
                   ),
                   Visibility(
@@ -80,10 +77,7 @@ class _HomePageState extends State<HomePage> {
                         _homeController.volume = double.parse(value);
                       },
                       onChanged: (value) {
-                        /*if (_validadeVolume(value) == null ||
-                            _validadeVolume(value).isEmpty) {
-                          controllerFilledVolumeInput.text = value;
-                        }*/
+                        _homeController.volume = double.tryParse(value);
                       },
                     ),
                   ),
